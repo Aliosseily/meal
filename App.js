@@ -6,6 +6,11 @@ and you import everything from that package and bundle it together in this font 
 import *  as Font from 'expo-font'
 import AppLoading from 'expo-app-loading';
 import MealsNavigator from './navigation/MealsNavigator'
+import { enableScreens } from 'react-native-screens'; // used in laat expo version and react native version
+//import { useScreens } from 'react-native-screens'; // used in not laat expo version and react native version
+
+
+enableScreens(); // improv ethe perfefromance of navugations between screens
 
 const fetchFonts = () =>{
   return Font.loadAsync({
