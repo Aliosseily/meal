@@ -8,9 +8,18 @@ import AppLoading from 'expo-app-loading';
 import MealsNavigator from './navigation/MealsNavigator'
 import { enableScreens } from 'react-native-screens'; // used in laat expo version and react native version
 //import { useScreens } from 'react-native-screens'; // used in not laat expo version and react native version
-
-
+import {createStore , combineReducers} from 'redux';
+import {Provider} from 'react-redux';
+import mealsReducer from './store/reducer/meals';
 enableScreens(); // improv ethe perfefromance of navugations between screens
+
+
+const rootReducer = combineReducers({
+  meals: mealsReducer
+})
+
+const store = createStore(rootReducer);
+
 
 const fetchFonts = () =>{
   return Font.loadAsync({
@@ -33,7 +42,7 @@ export default function App() {
   }
 
   return (
-<MealsNavigator/>
+    <Provider store={store}><MealsNavigator/></Provider>
   );
 }
 
