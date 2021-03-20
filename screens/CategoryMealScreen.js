@@ -1,19 +1,36 @@
 import React from 'react';
-import { View , Text , Button , StyleSheet } from "react-native";
-import {CATEGORIES} from '../data/dummy-data'
+import {StyleSheet,View } from "react-native";
+import {useSelector} from 'react-redux'
+// import {CATEGORIES , MEALS} from '../data/dummy-data'
+//import MealItem from '../components/MealItem'
+import MealList from '../components/MealList'
+import DefaultText from '../components/DefaultText'
 
 
 const CategoryMealScreen = props => {
+   //const selectedCategory = CATEGORIES.find(cat => cat.id ===  catId)
+    const catId = props.navigation.getParam('categoryId')
     const catTitle = props.navigation.getParam('categoryTitle')
-    //const selectedCategory = CATEGORIES.find(cat => cat.id ===  catId)
+
+    const availableMeals = useSelector(state => state.meals.filteredMeals) 
+    // state.meals is the name defined in App.js rootReducer
+    //.filteredMeals defined in meals.js
+
+// filter Meals object categoryIds array filed by CATEGORIES object id
+//const displayedMeals = MEALS.filter((meal) => meal.categoryIds.indexOf(catId) >= 0)
+const displayedMeals = availableMeals.filter((meal) => meal.categoryIds.indexOf(catId) >= 0)
+
+if(displayedMeals.length === 0){
+    return <View style={styles.content}>
+        <DefaultText>No meals found, maybe check our filters?</DefaultText>
+    </View>
+}
+
     return(
-        <View style={styles.screen}>
-            <Text>{catTitle}</Text>
-            <Text>The Category Meal Screen</Text>
-            <Button title="Go To Meal Details" onPress={() =>{
-                props.navigation.navigate({routeName : 'MealDetail'})
-            }}/>
-        </View>
+           <MealList 
+           listData = {displayedMeals}
+           navigation = {props.navigation}
+           />
     )
 }
 CategoryMealScreen.navigationOptions = navigatgionData => {
@@ -29,7 +46,7 @@ return{
 }
 
 const styles = StyleSheet.create({
-    screen:{
+    content:{
         flex:1,
         justifyContent:'center',
         alignItems:'center'
